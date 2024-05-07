@@ -180,7 +180,9 @@ function M.init_buffers(self)
 	local buffer_path = "/hyper_trails/trail_mesh_" .. unique_buffer_id .. ".bufferc"
 
 	self.mesh_buffer_resource = resource.create_buffer(buffer_path, { buffer = self.mesh_buffer })
-	go.set(self.trail_mesh_url, "vertices", self.mesh_buffer_resource)
+	-- go.set(self.trail_mesh_url, "vertices", self.mesh_buffer_resource)
+	-- QUICK FIX FOR DEFOLD v1.8.0 and greater (dirty first frame, buffer really changed in next frame)
+	timer.delay(.0, false, function() go.set(self.trail_mesh_url, "vertices", self.mesh_buffer_resource) end)
 
 	self.vertex_position_stream = buffer.get_stream(self.mesh_buffer, "position")
 	self.vertex_texcoord_stream = buffer.get_stream(self.mesh_buffer, "texcoord0")
